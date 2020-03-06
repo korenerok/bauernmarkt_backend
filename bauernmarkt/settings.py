@@ -32,8 +32,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-
-    'corsheaders',
+    'rest_framework',
+    'rest_framework.authtoken',
     'api.apps.ApiConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -54,11 +55,24 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+#CORS options
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_WHITELIST=(
     'http://localhost:3000',
     'http://127.0.0.1:3000'
 )
+
+#Django Rest Framework options
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    )
+}
+#
 
 ROOT_URLCONF = 'bauernmarkt.urls'
 

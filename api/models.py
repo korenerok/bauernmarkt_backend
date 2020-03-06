@@ -12,7 +12,7 @@ class Vendor (models.Model):
         return self.name
 
     
-class MarketEvent (models.Model):
+class Market (models.Model):
     MONDAY = 'MO'
     TUESDAY = 'TU'
     WEDNESDAY = 'WE'
@@ -31,29 +31,37 @@ class MarketEvent (models.Model):
     ]
     name=models.CharField(max_length=200)
     vendor= models.ForeignKey(Vendor,on_delete=models.CASCADE)
-    address= models.CharField(max_length=1000)
-    day_open= models.CharField(max_length=2,choices=DAYS_OF_THE_WEEK)
-    day_close= models.CharField(max_length=2,choices=DAYS_OF_THE_WEEK)
-    time_open= models.TimeField()
-    time_close=models.TimeField()
+    address= models.CharField(max_length=1000,blank=True)
+    day_open= models.CharField(max_length=2,choices=DAYS_OF_THE_WEEK,null=True)
+    day_close= models.CharField(max_length=2,choices=DAYS_OF_THE_WEEK,null=True)
+    time_open= models.TimeField(null=True)
+    time_close=models.TimeField(null=True)
+
+    def __str__(self):
+        return self.name
 
     def natural_key(self):
         return self.name
-
 
 class Product(models.Model):
     name=models.CharField(max_length=100)
-    description=models.TextField(max_length=1000)
+    description=models.TextField(max_length=1000,blank=True)
+
+    def __str__(self):
+        return self.name
 
     def natural_key(self):
         return self.name
 
     
-class Catalog(models.Model):
-    market= models.ForeignKey(MarketEvent,on_delete=models.CASCADE)
+class Item(models.Model):
+    market= models.ForeignKey(Market,on_delete=models.CASCADE)
     product= models.ForeignKey(Product,on_delete=models.CASCADE)
     price= models.DecimalField(max_digits=10,decimal_places=2)
-    
+
+    def __str__(self):
+        return str(self.product)+','+str(self.market)
+
     class Meta:
         constraints=[
             models.UniqueConstraint(fields=['market','product'],name='unique_product_per_market')
