@@ -31,3 +31,31 @@ class VendorViewSet(viewsets.ModelViewSet):
     queryset=Vendor.objects.all()
     serializer_class=VendorSerializer
     permission_classes=[IsAdmin]
+
+#class ItemByFilter(generics.ListAPIView):
+#    queryset=Item.objects.all()
+#    serializer_class=ItemSerializer
+#
+#    def list(self,request,keyword,pk):
+#        filter_to_apply={'{}'.format(keyword):pk}
+#        queryset=Item.objects.filter(**filter_to_apply)
+#        serializer=ItemSerializer(queryset,many=True)
+#        return Response(serializer.data)
+
+class ItemByProduct(generics.ListAPIView):
+    queryset=Item.objects.all()
+    serializer_class=ItemSerializer
+
+    def list(self,request,pk):
+        queryset=Item.objects.filter(product=pk)
+        serializer=ItemSerializer(queryset,many=True)
+        return Response(serializer.data)
+
+class ItemByMarket(generics.ListAPIView):
+    queryset=Item.objects.all()
+    serializer_class=ItemSerializer
+
+    def list(self,request,pk):
+        queryset=Item.objects.filter(market=pk)
+        serializer=ItemSerializer(queryset,many=True)
+        return Response(serializer.data)

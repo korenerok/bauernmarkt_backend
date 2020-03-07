@@ -60,7 +60,7 @@ class Item(models.Model):
     price= models.DecimalField(max_digits=10,decimal_places=2)
 
     def __str__(self):
-        return str(self.product)+','+str(self.market)
+        return '%s, %s' % (self.product,self.market)
 
     class Meta:
         constraints=[
